@@ -17,7 +17,7 @@ client = OpenAI(
 )
 
 MODEL = "text-embedding-3-small"
-BATCH = 64
+BATCH_SIZE = 64
 
 def embed_chunks(chunks):
     vectors = []
