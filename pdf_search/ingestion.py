@@ -45,7 +45,8 @@ def build_or_update_index(new_chunks, new_embeddings):
     new_embeddings = np.array(new_embeddings).astype("float32")
     if os.path.exists(INDEX_PATH):
         index = faiss.read_index(INDEX_PATH)
-        meta = pickle.load(open(META_PATH), "rb")
+        with open(META_PATH, "rb") as f:
+            meta = pickle.load(f)
     else:
         dim = new_embeddings.shape[1]
         index = faiss.IndexFlatIP(dim)

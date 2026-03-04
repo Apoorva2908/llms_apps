@@ -4,6 +4,7 @@ from fastapi import FastAPI, UploadFile
 
 from ingestion import process_pdf, build_or_update_index
 from search import search
+from generator import generate_answer
 
 app = FastAPI()
 
@@ -28,3 +29,13 @@ async def upload_pdf(file: UploadFile):
 def query(q:str):
     results = search(q)
     return {"results": results}
+
+@app.get("/rag")
+def rag(query: str, k:int = 5):
+    contexts = search(query, k)
+    answer = generate_answer(query, contexts)
+
+    return {
+        "answer" : answer,
+        "contexts": contexts
+    }
